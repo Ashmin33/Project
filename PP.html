@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Visiting Card - Ashmin Nawaz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Variables for Themes */
+        :root {
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.25);
+            --text-color: #1e293b;
+            --accent-color: #0ea5e9;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --button-bg: rgba(255, 255, 255, 0.2);
+            --button-hover: rgba(255, 255, 255, 0.4);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.25);
+            --text-color: #f1f5f9;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            --button-bg: rgba(30, 41, 59, 0.2);
+            --button-hover: rgba(30, 41, 59, 0.4);
+        }
+
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--button-bg);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .theme-toggle:hover {
+            background: var(--button-hover);
+            transform: scale(1.1);
+        }
+
+        .theme-toggle i {
+            font-size: 20px;
+            color: var(--text-color);
+        }
+
+        /* Card Styles with Glassmorphism */
+        .card {
+            background: var(--card-bg);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Profile Section */
+        .profile {
+            margin-bottom: 20px;
+        }
+
+        .profile img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 3px solid var(--accent-color);
+        }
+
+        .profile h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .profile p {
+            font-size: 16px;
+            color: var(--accent-color);
+            margin-bottom: 5px;
+        }
+
+        .profile .company {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        /* Buttons Grid */
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: var(--button-bg);
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 5px;
+            color: var(--accent-color);
+        }
+
+        .btn span {
+            font-size: 12px;
+            display: block;
+        }
+
+        /* Ripple Effect */
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:active::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        /* Save Contact Button */
+        .save-contact {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 15px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .save-contact:hover {
+            background: #0284c7;
+            transform: scale(1.02);
+        }
+
+        /* QR Code Section */
+        .qr-section {
+            text-align: center;
+        }
+
+        .qr-section p {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        #qrcode {
+            margin: 0 auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .card {
+                padding: 20px;
+            }
+
+            .profile img {
+                width: 80px;
+                height: 80px;
+            }
+
+            .buttons {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+
+            .btn {
+                padding: 12px;
+            }
+
+            .btn i {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Main Card -->
+    <div class="card">
+        <!-- Profile Section -->
+        <div class="profile">
+            <img src="https://i.imgur.com/yourimage.png" alt="Ashmin Nawaz">
+            <h1>Ashmin Nawaz</h1>
+            <p>Full Stack Developer</p>
+            <p class="company">AN Tech Solutions</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="buttons">
+            <button class="btn" onclick="window.location.href='tel:+919876543210'">
+                <i class="fas fa-phone"></i>
+                <span>Call</span>
+            </button>
+            <button class="btn" onclick="window.open('https://wa.me/919876543210', '_blank')">
+                <i class="fab fa-whatsapp"></i>
+                <span>WhatsApp</span>
+            </button>
+            <button class="btn" onclick="window.location.href='mailto:ashmin.dev@gmail.com'">
+                <i class="fas fa-envelope"></i>
+                <span>Email</span>
+            </button>
+            <button class="btn" onclick="window.open('https://ashmin.dev', '_blank')">
+                <i class="fas fa-globe"></i>
+                <span>Website</span>
+            </button>
+            <button class="btn" onclick="window.open('https://maps.google.com/?q=Bhiwandi, Thane, Maharashtra, India', '_blank')">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>Location</span>
+            </button>
+            <button class="btn" onclick="window.open('https://instagram.com/ashmin.dev', '_blank')">
+                <i class="fab fa-instagram"></i>
+                <span>Instagram</span>
+            </button>
+            <button class="btn" onclick="window.open('https://linkedin.com/in/ashminnawaz', '_blank')">
+                <i class="fab fa-linkedin"></i>
+                <span>LinkedIn</span>
+            </button>
+            <button class="btn" onclick="window.open('https://youtube.com/@ashmintech', '_blank')">
+                <i class="fab fa-youtube"></i>
+                <span>YouTube</span>
+            </button>
+        </div>
+
+        <!-- Save Contact Button -->
+        <button class="save-contact" onclick="downloadVCard()">Save Contact</button>
+
+        <!-- QR Code Section -->
+        <div class="qr-section">
+            <p>Scan to share this card</p>
+            <div id="qrcode"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script>
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+        const icon = themeToggle.querySelector('i');
+
+        themeToggle.addEventListener('click', () => {
+            body.dataset.theme = body.dataset.theme === 'dark' ? '' : 'dark';
+            icon.className = body.dataset.theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        });
+
+        // Generate QR Code linking to the current page
+        const qrCodeContainer = document.getElementById('qrcode');
+        const qr = new QRCode(qrCodeContainer, {
+            text: window.location.href,
+            width: 128,
+            height: 128,
+        });
+
+        // Download vCard Functionality
+        function downloadVCard() {
+            const vCardData = `BEGIN:VCARD
+VERSION:3.0
+FN:Ashmin Nawaz
+TITLE:Full Stack Developer
+ORG:AN Tech Solutions
+TEL:+919876543210
+EMAIL:ashmin.dev@gmail.com
+URL:https://ashmin.dev
+ADR:;;Bhiwandi, Thane, Maharashtra, India
+END:VCARD`;
+
+            const blob = new Blob([vCardData], { type: 'text/vcard' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Ashmin_Nawaz.vcf';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
